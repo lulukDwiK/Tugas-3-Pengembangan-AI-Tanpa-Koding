@@ -1,0 +1,158 @@
+{
+  "name": "Tugas 3 Pengembangan AI Tanpa Koding",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -240,
+        -48
+      ],
+      "id": "5ddafa09-2f1c-4eae-8694-94a32b1107a6",
+      "name": "When chat message received",
+      "webhookId": "0d4820ad-ed5c-4022-abca-96024398b2fc"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\"Anda adalah asisten virtual NF ACADEMY. Tugas Anda adalah menjawab pertanyaan pengguna mengenai produk pelatihan dan harganya berdasarkan data yang ada di Google Sheets. Jika pengguna bertanya tentang harga atau detail kursus, gunakan tool Google Sheets untuk mencari informasinya. Jawablah dengan ramah.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "917272e8-47d1-4248-a61f-6bf05daa90cc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        160
+      ],
+      "id": "6b317afd-2dd6-4309-95f8-0deba63eefc5",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "A2k7xC53Rg8AiTAD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        160
+      ],
+      "id": "a1d02b7f-7cde-4312-887b-6757ae461939",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1mPWO0VtQBEnth7JRBNf7GX61dKxPWjL4DPmyTBj7Wrg",
+          "mode": "list",
+          "cachedResultName": "n8n gokil",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mPWO0VtQBEnth7JRBNf7GX61dKxPWjL4DPmyTBj7Wrg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 897114543,
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mPWO0VtQBEnth7JRBNf7GX61dKxPWjL4DPmyTBj7Wrg/edit#gid=897114543"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        160
+      ],
+      "id": "f138b4c9-66c5-4c8e-9c4e-594573e3f563",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PAnPx4bjHEdqbSSt",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8d72d4e3-767a-46de-b953-f078db35b5e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "56459fc98fce519c0c2717436eb7e5c02f8c27b6cacf7c4b3834e41335416be7"
+  },
+  "id": "oy5LgMd2cBBJ1IgI",
+  "tags": []
+}
